@@ -1,6 +1,7 @@
 import os
 import pandas as pd
-glob_path = r'C:\Users\USER\projects\ozon_dataset\brands_year'
+
+glob_path = r'C:\Users\USER\Projects\scrape_ozon_dataset\brands_year'
 
 # Get all .xlsx files in the directory (ignore subfolders)
 files = [f for f in os.listdir(glob_path) if f.endswith('.xlsx') and os.path.isfile(os.path.join(glob_path, f))]

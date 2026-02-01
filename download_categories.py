@@ -48,6 +48,7 @@ with uc.Chrome(options=options) as driver:
             time.sleep(2)  # дать странице прогрузиться, можно увеличить
             wait = WebDriverWait(driver, 20)
             download_btn = None
+            
             # 1. Пробуем найти по XPATH (старый способ)
             try:
                 download_btn = wait.until(
@@ -58,6 +59,7 @@ with uc.Chrome(options=options) as driver:
                 )
             except Exception:
                 pass
+
             # 2. Если не нашли, пробуем по CSS и тексту
             if not download_btn:
                 try:
@@ -72,6 +74,7 @@ with uc.Chrome(options=options) as driver:
                             continue
                 except Exception:
                     pass
+
             # 3. Если не нашли, пробуем по полному XPath
             if not download_btn:
                 try:
@@ -83,6 +86,7 @@ with uc.Chrome(options=options) as driver:
                     )
                 except Exception:
                     pass
+
             # 4. Если не нашли, сохраняем скриншот и HTML для диагностики
             if not download_btn:
                 ts = int(time.time())
@@ -94,6 +98,7 @@ with uc.Chrome(options=options) as driver:
             before_files = set(os.listdir(DOWNLOAD_DIR))
             download_btn.click()
             print(f"Clicked Download on: {url}")
+
             # Ждём появления нового файла
             downloaded_file = None
             for _ in range(60):  # до 60 секунд
@@ -109,12 +114,15 @@ with uc.Chrome(options=options) as driver:
             if not downloaded_file or downloaded_file.endswith('.crdownload'):
                 print(f"Warning: Downloaded file for {label} not found or still downloading.")
                 continue
+
             # Переименовываем файл
             new_name = os.path.join(DOWNLOAD_DIR, f"{label}.xlsx")
+
             # Если файл с таким именем уже есть, удаляем
             if os.path.exists(new_name):
                 os.remove(new_name)
             os.rename(downloaded_file, new_name)
             print(f"Saved as: {new_name}")
+
         except Exception as e:
             print(f"Error on {url}: {e}")
